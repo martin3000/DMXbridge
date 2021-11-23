@@ -4,13 +4,13 @@ In this project I will use a PC to send Artnet control commands over LAN/Wifi, r
 
 Connections:
 
-Variant a):
+Variant a) without RS485 module:
 
 - GND to DMX 1,
 - pin 16 of ESP32 to DMX 2, 
 - pin 17 of ESP32 to DMX 3
 
-Variant b):
+Variant b) with RS485 module:
 
 - GND to GND of RS485 module
 - 3.3V to Vcc of RS485 module
