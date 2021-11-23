@@ -92,7 +92,7 @@ void onDmxFrame(uint16_t universe, uint16_t length, uint8_t sequence, uint8_t* d
   } else {
     l = length;
   }
-  // send out the buffer
+  // log the buffer
   for (int i = 0; i < l; i++)  {
     Serial.print(data[i], HEX);
     Serial.print(" ");
