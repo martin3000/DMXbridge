@@ -23,3 +23,4 @@ Variant b) with RS485 module:
 
 If the light is reacting, but in the wrong way, then exchange DMX 2 and 3.
  
+You can use this together with the [Hass-Dmx](https://github.com/jnimmo/hass-dmx) home assistant integration, which generates the necessary Artnet commands to control DMX lights.
