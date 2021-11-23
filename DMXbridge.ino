@@ -31,7 +31,6 @@ dmx_port_t dmxPort = UART_NUM_2;
   data can be up to 513 bytes long, we want our array to be at least that long.
   This library knows that the max DMX packet size is 513, so we can fill in the
   array size with `DMX_MAX_PACKET_SIZE`. */
-//byte data[DMX_MAX_PACKET_SIZE];
   byte buf[DMX_MAX_PACKET_SIZE];
 
 
@@ -89,8 +88,6 @@ void onDmxFrame(uint16_t universe, uint16_t length, uint8_t sequence, uint8_t* d
   Serial.print(length, DEC);
   Serial.print("): ");
 
-  //if (length>512) length=512;
-  
   if (length > 16) {
     l = 16;
     tail = true;
@@ -113,22 +110,10 @@ void onDmxFrame(uint16_t universe, uint16_t length, uint8_t sequence, uint8_t* d
     length = DMX_MAX_PACKET_SIZE-1;
   }
 
-  memcpy(buf+1, data, length);  //fill slot 1-512
+  memcpy(buf+1, data, length);    //fill slot 1-512
   buf[0]=DMX_SC;                  //slot 0
   
   dmx_write_packet(dmxPort, buf, length+1);
-
-  /* the following code writes DMX values only when a artnet packet was received. but DMX devices need a continuous stream auf data so we do that in the loop() */
-  if (1==2) {
-    /* Now we can transmit the DMX packet! */
-    dmx_tx_packet(dmxPort);
-
-    /* fill a single slot */
-    //dmx_write_slot(DMX_NUM_2, 5, 255);
-
-    /* If we have no more work to do, we will wait until we are done sending our DMX packet. */
-    dmx_wait_tx_done(dmxPort, DMX_TX_PACKET_TOUT_TICK);
-  }
 }
 
 
@@ -143,7 +128,7 @@ void setup(){
   dmx_param_config(dmxPort, &dmxConfig);
   dmx_set_pin(dmxPort, transmitPin, receivePin, enablePin);
 
-  /* Now we can install the DMX driver! We'll tell it which DMX port to use and
+  /* install the DMX driver. We'll tell it which DMX port to use and
     how big our DMX packet is expected to be. Typically, we'd pass it a handle
     to a queue, but since we are only transmitting DMX, we don't need a queue.
     We can write `NULL` where we'd normally put our queue handle. We'll also
@@ -151,15 +136,14 @@ void setup(){
     to 1. */
   int queueSize = 0;
   int interruptPriority = 1;
-  dmx_driver_install(dmxPort, DMX_MAX_PACKET_SIZE, queueSize, NULL,
-                     interruptPriority);
+  dmx_driver_install(dmxPort, DMX_MAX_PACKET_SIZE, queueSize, NULL, interruptPriority);
 
   /* Finally, since we are transmitting DMX, we should tell the DMX driver that
     we are transmitting, not receiving. We should also set our DMX start code
     to 0.*/
   dmx_set_mode(dmxPort, DMX_MODE_TX);
 
-  /* initialize th transmit buffer */
+  /* initialize the transmit buffer */
   for(int i = 0; i<DMX_MAX_PACKET_SIZE; i++){
     buf[i] = 0;
   }
@@ -174,12 +158,12 @@ void loop() {
   // we call the read function inside the loop
   artnet.read();
 
-  /* Now we can transmit the DMX packet! */
+  /* transmit the DMX packet */
+  /* DMX devices need a continuous stream auf data so we continuously send the last packet */ 
   dmx_tx_packet(dmxPort);
 
-  /* fill a single slot */
-  //dmx_write_slot(DMX_NUM_2, 5, 255);
-
+  delay(100);
+  
   /* If we have no more work to do, we will wait until we are done sending our DMX packet. */
   dmx_wait_tx_done(dmxPort, DMX_TX_PACKET_TOUT_TICK);
 }
