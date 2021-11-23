@@ -18,7 +18,8 @@ Variant b) with RS485 module:
 - pin 17 of ESP32 to pin DI of RS485 module
 - 3.3V to pin DE of RS485 module
 - GND to DMX 1
-- A,B of RS485 module to DMX 2 and 3
+- A of RS485 module to DMX 3
+- B of RS485 module to DMX 2
 
 If the light is reacting, but in the wrong way, then exchange DMX 2 and 3.
  
