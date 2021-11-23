@@ -77,7 +77,6 @@ boolean ConnectWifi(void) {
 }
 
 void onDmxFrame(uint16_t universe, uint16_t length, uint8_t sequence, uint8_t* data) {
-  boolean tail = false;
   uint16_t l;
   
   Serial.print("DMX: Univ: ");
@@ -90,7 +89,6 @@ void onDmxFrame(uint16_t universe, uint16_t length, uint8_t sequence, uint8_t* d
 
   if (length > 16) {
     l = 16;
-    tail = true;
   } else {
     l = length;
   }
@@ -99,7 +97,7 @@ void onDmxFrame(uint16_t universe, uint16_t length, uint8_t sequence, uint8_t* d
     Serial.print(data[i], HEX);
     Serial.print(" ");
   }
-  if (tail) {
+  if (length>16) {
     Serial.print("...");
   }
   Serial.println();
