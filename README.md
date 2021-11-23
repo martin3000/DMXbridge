@@ -21,3 +21,4 @@ GND to DMX 1
 A,B of RS485 module to DMX 2 and 3
 
 If the light is reacting, but in the wrong way, then exchange DMX 2 and 3.
+ 
